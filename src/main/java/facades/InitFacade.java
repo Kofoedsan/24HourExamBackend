@@ -1,8 +1,11 @@
 package facades;
 
 import entities.Role;
+import utils.LocalTestDb;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.io.IOException;
 
 public class InitFacade {
 
@@ -22,21 +25,21 @@ public class InitFacade {
         return emf.createEntityManager();
     }
 
-    public void InitDB() {
+    public void InitDB() throws IOException {
         EntityManager em = emf.createEntityManager();
-
-        Role userRole = new Role("user");
-        Role adminRole = new Role("admin");
-        Role superRole = new Role("superUser");
+        LocalTestDb.start();
+//        Role userRole = new Role("user");
+//        Role adminRole = new Role("admin");
+//        Role superRole = new Role("superUser");
         try {
 
-            em.getTransaction().begin();
-            em.persist(userRole);
-            em.persist(adminRole);
-            em.persist(superRole);
-            em.getTransaction().commit();
-            em.flush();
-            em.close();
+//            em.getTransaction().begin();
+//            em.persist(userRole);
+//            em.persist(adminRole);
+//            em.persist(superRole);
+//            em.getTransaction().commit();
+//            em.flush();
+//            em.close();
         } catch (Exception e) {
             em.flush();
             em.close();
