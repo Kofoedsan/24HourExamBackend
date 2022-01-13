@@ -1,11 +1,17 @@
 package facades;
 
+import dtos.ConferenceDTO;
+import dtos.SpeakerDTO;
+import dtos.TalkDTO;
 import dtos.UserDTO;
 import entities.*;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
+
 import security.errorhandling.AuthenticationException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +58,7 @@ public class UserFacade {
         User user = new User(udto);
         Role userRole = new Role("user");
         user.addRole(userRole);
-            newUser = new UserDTO(user);
+        newUser = new UserDTO(user);
         try {
             em.getTransaction().begin();
             em.persist(user);
@@ -97,4 +103,74 @@ public class UserFacade {
         return userDTOList;
     }
 
+    public List<ConferenceDTO> getAllConferences() {
+        EntityManager em = getEntityManager();
+        TypedQuery<Conference> query = em.createQuery("SELECT c FROM Conference c", Conference.class);
+        List<ConferenceDTO> conferenceDTOS = new ArrayList<>();
+        for (int i = 0; i < query.getResultList().size(); i++) {
+            ConferenceDTO conferenceDTO = new ConferenceDTO(query.getResultList().get(i));
+            conferenceDTOS.add(conferenceDTO);
+        }
+        return conferenceDTOS;
+    }
+
+    public List<TalkDTO> getAllTalks() {
+        EntityManager em = getEntityManager();
+        TypedQuery<Talk> query = em.createQuery("SELECT t FROM Talk t", Talk.class);
+        List<TalkDTO> talkDTOS = new ArrayList<>();
+        for (int i = 0; i < query.getResultList().size(); i++) {
+            TalkDTO talkDTO = new TalkDTO(query.getResultList().get(i));
+            talkDTOS.add(talkDTO);
+        }
+
+        return talkDTOS;
+    }
+
+    public List<TalkDTO> getTalkByConferenceId(int ConferenceId) {
+        EntityManager em = getEntityManager();
+        TypedQuery<Talk> query = em.createQuery("SELECT t FROM Talk t where t.Conference.id=:ConferenceId", Talk.class);
+        query.setParameter("ConferenceId", ConferenceId);
+        List<TalkDTO> talkDTOS = new ArrayList<>();
+        for (int i = 0; i < query.getResultList().size(); i++) {
+            TalkDTO talkDTO = new TalkDTO(query.getResultList().get(i));
+            talkDTOS.add(talkDTO);
+        }
+        return talkDTOS;
+    }
+
+
+//    public List<TalkDTO> GetTalkBySpeakerId(int speakerId) {
+//        EntityManager em = getEntityManager();
+//        TypedQuery<Speaker> query = em.createQuery("SELECT s FROM Speaker s join Talk t where s.id=:speakerId", Speaker.class);
+//        query.setParameter("speakerId", speakerId);
+//        List<TalkDTO> talkDTOS = new ArrayList<>();
+//        for (int i = 0; i < query.getSingleResult().getTalkList().size(); i++) {
+//            TalkDTO talkDTO = new TalkDTO(query.getSingleResult().getTalkList().get(i));
+//            talkDTOS.add(talkDTO);
+//        }
+//        return talkDTOS;
+//    }
+
+    public List<TalkDTO> GetTalkBySpeakerId(int speakerId) {
+        EntityManager em = getEntityManager();
+        TypedQuery<Speaker> query = em.createQuery("SELECT s FROM Speaker s join Talk t where s.id=:speakerId", Speaker.class);
+        query.setParameter("speakerId", speakerId);
+        List<TalkDTO> talkDTOS = new ArrayList<>();
+        for (int i = 0; i < query.getSingleResult().getTalkList().size(); i++) {
+            TalkDTO talkDTO = new TalkDTO(query.getSingleResult().getTalkList().get(i));
+            talkDTOS.add(talkDTO);
+        }
+        return talkDTOS;
+    }
+
+    public List<SpeakerDTO> GetAllSpeakers() {
+        EntityManager em = getEntityManager();
+        TypedQuery<Speaker> query = em.createQuery("SELECT s FROM Speaker s", Speaker.class);
+        List<SpeakerDTO> speakerDTOS = new ArrayList<>();
+        for (int i = 0; i < query.getResultList().size(); i++) {
+            SpeakerDTO speakerDTO = new SpeakerDTO(query.getResultList().get(i));
+            speakerDTOS.add(speakerDTO);
+        }
+        return speakerDTOS;
+    }
 }

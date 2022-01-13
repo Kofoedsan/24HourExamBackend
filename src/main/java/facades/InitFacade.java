@@ -27,7 +27,7 @@ public class InitFacade {
 
     public void InitDB() throws IOException {
         EntityManager em = emf.createEntityManager();
-        LocalTestDb.start();
+//        LocalTestDb.start();
 //        Role userRole = new Role("user");
 //        Role adminRole = new Role("admin");
 //        Role superRole = new Role("superUser");
