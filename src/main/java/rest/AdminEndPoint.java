@@ -107,7 +107,7 @@ public class AdminEndPoint {
 
     @PUT
     @Path("addConferenceToTalk/{talkid}")
-    @RolesAllowed({"admin", "superuser"})
+//    @RolesAllowed({"admin", "superuser"})
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response addConferenceToTalk(@PathParam("talkid") int talkid, int confId) throws RandomError {

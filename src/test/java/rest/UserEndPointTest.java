@@ -101,6 +101,7 @@ class UserEndPointTest {
         User u2 = new User("user", "test");
         Role userRole = new Role("user");
         Role adminsRole = new Role("admin");
+        Role suRole = new Role("superuser");
         speaker1 = new Speaker("SpeakerMan1", "IT", "Male");
         speaker2 = new Speaker("SpeakerWoman2", "Finanse", "Woman");
         speaker3 = new Speaker("SpeakerMan2", "Art", "Male");
@@ -187,6 +188,7 @@ class UserEndPointTest {
             u2.addRole(userRole);
             em.persist(userRole);
             em.persist(adminsRole);
+            em.persist(suRole);
             em.persist(u1);
             em.persist(u2);
             em.persist(speaker1);
@@ -229,11 +231,11 @@ class UserEndPointTest {
     }
 
     @Test
-    void getAllConferences() {
+    void GetAllSpeakers() {
         login("admin", "test");
         given()
-                .contentType("application/json")
-                .when()
+                .contentType("application/json").when()
+                .header("x-access-token", securityToken)
                 .get("/user/GetAllSpeakers").then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
@@ -243,9 +245,10 @@ class UserEndPointTest {
 
     @Test
     void GetTalkBySpeakerId() {
+        login("admin", "test");
         given()
-                .contentType("application/json")
-                .when()
+                .contentType("application/json").when()
+                .header("x-access-token", securityToken)
                 .get("/user/GetTalkBySpeakerId/"+speaker1.getId()).then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
@@ -257,6 +260,84 @@ class UserEndPointTest {
                 .body("dto_time[0]", equalTo(speaker1.getTalkList().get(0).getConference().getTime()));
     }
 
+    @Test
+    void createSpeaker() {
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("dto_name", "Testp1");
+        requestParams.put("dto_proffession", "BoatBuilding");
+        requestParams.put("dto_gender", "Male");
+        login("admin", "test");
+        given()
+                .contentType("application/json").when()
+                .header("x-access-token", securityToken)
+                .body(requestParams.toJSONString())
+                .post("/admin/createspeaker/").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("dto_name", equalTo("Testp1"))
+                .body("dto_proffession", equalTo("BoatBuilding"))
+                .body("dto_gender", equalTo("Male"));
+    }
+
+    @Test
+    void updateSpeaker() {
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("dto_name", "Zion");
+        requestParams.put("dto_proffession", "History");
+        requestParams.put("dto_gender", "Female");
+        login("admin", "test");
+        given()
+                .contentType("application/json").when()
+                .header("x-access-token", securityToken)
+                .body(requestParams.toJSONString())
+                .put("/admin/updateSpeaker/" + speaker2.getId()).then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("dto_name", equalTo("Zion"))
+                .body("dto_proffession", equalTo("History"))
+                .body("dto_gender", equalTo("Female"));
+    }
+    @Test
+    void addConferenceToTalk() {
+        login("admin", "test");
+        given()
+                .contentType("application/json").when()
+                .header("x-access-token", securityToken)
+                .body(conference1.getId())
+                .put("/admin/addConferenceToTalk/" + talk2.getId()).then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("dto_id", equalTo(talk2.getId()))
+                .body("dto_topic", equalTo(talk2.getTopic()))
+                .body("dto_duration", equalTo(talk2.getduration()))
+                .body("dto_location", equalTo(talk2.getConference().getlocation()))
+                .body("dto_date", equalTo(talk2.getConference().getDate()))
+                .body("dto_time", equalTo(talk2.getConference().getTime()));
+
+    }
+
+    @Test
+    void updateConference() {
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("dto_location", "Køge");
+        requestParams.put("dto_capacity", "500");
+        requestParams.put("dto_date", "2022-01-05");
+        requestParams.put("dto_time", "15:00");
+
+        login("admin", "test");
+        given()
+                .contentType("application/json").when()
+                .header("x-access-token", securityToken)
+                .body(requestParams.toJSONString())
+                .put("/admin/updateConference/" + conference1.getId()).then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("dto_location", equalTo("Køge"))
+                .body("dto_capacity", equalTo(500))
+                .body("dto_date", equalTo("2022-01-05"))
+                .body("dto_time", equalTo("15:00"));
+
+    }
 
 
 }
