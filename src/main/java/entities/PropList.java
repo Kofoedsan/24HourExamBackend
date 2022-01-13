@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.PropsDTO;
+
 import javax.persistence.*;
 
 @Entity
@@ -17,6 +19,11 @@ public class PropList {
     }
 
     public PropList() {
+    }
+
+    public PropList(PropsDTO prop) {
+        this.id=prop.getDto_id();
+        this.item= prop.getDto_item();
     }
 
     public Integer getId() {

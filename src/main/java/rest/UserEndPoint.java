@@ -66,7 +66,7 @@ public class UserEndPoint {
 
     @GET
     @Path("getAllConferences")
-//    @RolesAllowed({"user","admin", "superuser"})
+    @RolesAllowed({"user","admin", "superuser"})
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllConferences() {
         List<ConferenceDTO> u = userFacade.getAllConferences();
@@ -75,7 +75,7 @@ public class UserEndPoint {
 
     @GET
     @Path("getAllTalks")
-//    @RolesAllowed({"user","admin", "superuser"})
+    @RolesAllowed({"user","admin", "superuser"})
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllTalks() {
         List<TalkDTO> u = userFacade.getAllTalks();
@@ -84,7 +84,7 @@ public class UserEndPoint {
 
     @GET
     @Path("getTalkByConferenceId/{ConferenceId}")
-//    @RolesAllowed({"user","admin", "superuser"})
+    @RolesAllowed({"user","admin", "superuser"})
     @Produces({MediaType.APPLICATION_JSON})
     public Response getTalkByConferenceId(@PathParam("ConferenceId") int ConferenceId){
         List<TalkDTO> u = userFacade.getTalkByConferenceId(ConferenceId);
@@ -93,7 +93,7 @@ public class UserEndPoint {
 
     @GET
     @Path("GetAllSpeakers")
-//    @RolesAllowed({"user","admin", "superuser"})
+    @RolesAllowed({"user","admin", "superuser"})
     @Produces({MediaType.APPLICATION_JSON})
     public Response GetAllSpeakers() {
         List<SpeakerDTO> u = userFacade.GetAllSpeakers();
@@ -102,20 +102,11 @@ public class UserEndPoint {
 
     @GET
     @Path("GetTalkBySpeakerId/{speakerId}")
-//    @RolesAllowed({"user","admin", "superuser"})
+    @RolesAllowed({"user","admin", "superuser"})
     @Produces({MediaType.APPLICATION_JSON})
     public Response GetTalkBySpeakerId(@PathParam("speakerId") int speakerId){
         List<TalkDTO> u = userFacade.GetTalkBySpeakerId(speakerId);
         return Response.ok().entity(GSON.toJson(u)).build();
     }
-
-//    @GET
-//    @Path("GetTalkBySpeakerIdTEST/{speakerId}")
-////    @RolesAllowed({"user","admin", "superuser"})
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public Response GetTalkBySpeakerIdTEST(@PathParam("speakerId") int speakerId){
-//        List<TalkDTO> u = userFacade.GetTalkBySpeakerIdTEST(speakerId);
-//        return Response.ok().entity(GSON.toJson(u)).build();
-//    }
 
 }

@@ -1,7 +1,10 @@
 package dtos;
 
-import entities.Speaker;
+import entities.PropList;
 import entities.Talk;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TalkDTO {
     private Integer dto_id;
@@ -11,6 +14,10 @@ public class TalkDTO {
     private Integer dto_capacity;
     private String dto_date;
     private String dto_time;
+    private Integer dto_props_id;
+    private String dto_props_item;
+    private List<PropsDTO> dto_propsDTOList;
+
 
     public TalkDTO(Integer dto_id, String dto_topic, String dto_duration) {
         this.dto_id = dto_id;
@@ -28,6 +35,32 @@ public class TalkDTO {
             this.dto_date = t.getConference().getDate();
             this.dto_time = t.getConference().getTime();
         }
+
+        if (t.getProps().size() > 0) {
+            for (int i = 0; i < t.getProps().size(); i++) {
+                if (t.getProps().get(i) != null) {
+                    List<PropsDTO> propsDTOS = new ArrayList<>();
+                    PropsDTO propsDTO = new PropsDTO(t.getProps().get(i));
+                    propsDTOS.add(propsDTO);
+                    this.dto_propsDTOList = propsDTOS;
+                }
+            }
+        }
+    }
+
+    public TalkDTO(PropList propList) {
+        this.dto_props_id = propList.getId();
+        this.dto_props_item = propList.getItem();
+
+    }
+
+
+    public List<PropsDTO> getDto_propsDTOList() {
+        return dto_propsDTOList;
+    }
+
+    public void setDto_propsDTOList(List<PropsDTO> dto_propsDTOList) {
+        this.dto_propsDTOList = dto_propsDTOList;
     }
 
     public Integer getDto_id() {

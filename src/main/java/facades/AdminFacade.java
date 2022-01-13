@@ -2,13 +2,10 @@ package facades;
 
 import dtos.*;
 import entities.*;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
-
-import security.errorhandling.AuthenticationException;
-
+import errorhandling.RandomError;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,43 +30,58 @@ public class AdminFacade {
         return emf.createEntityManager();
     }
 
-    public ConferenceDTO createConference(ConferenceDTO conferenceDTO) {
+    public ConferenceDTO createConference(ConferenceDTO conferenceDTO) throws RandomError {
         EntityManager em = emf.createEntityManager();
 
         Conference conference = new Conference(conferenceDTO);
+        try {
+
         em.getTransaction().begin();
         em.persist(conference);
         em.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RandomError(500, "Unable to create conference. Please contact support");
+        }
 
         return new ConferenceDTO(conference);
     }
 
-    public TalkDTO createtalk(TalkDTO talkDTO) {
+    public TalkDTO createtalk(TalkDTO talkDTO) throws RandomError {
         EntityManager em = emf.createEntityManager();
 
         Talk talk = new Talk(talkDTO);
+        try {
+
         em.getTransaction().begin();
         em.persist(talk);
         em.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RandomError(500, "Unable to create talk. Please contact support");
+        }
 
         return new TalkDTO(talk);
 
     }
 
-    public SpeakerDTO createspeaker(SpeakerDTO speakerDTO) {
+    public SpeakerDTO createspeaker(SpeakerDTO speakerDTO) throws RandomError {
         EntityManager em = emf.createEntityManager();
 
         Speaker speaker = new Speaker(speakerDTO);
+        try {
+
         em.getTransaction().begin();
         em.persist(speaker);
         em.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RandomError(500, "Unable to create person. Please contact support");
+        }
 
         return new SpeakerDTO(speaker);
 
 
     }
 
-    public SpeakerDTO updateTalkSpeaker(int talkId, int speakerId) {
+    public SpeakerDTO updateTalkSpeaker(int talkId, int speakerId) throws RandomError {
         EntityManager em = emf.createEntityManager();
         SpeakerDTO speakerDTO = null;
         try {
@@ -84,12 +96,13 @@ public class AdminFacade {
 
             speakerDTO = new SpeakerDTO(speaker);
         } catch (Exception e) {
+            throw new RandomError(500, "Unable to update. Please contact support");
         }
         return speakerDTO;
 
     }
 
-    public String deleteTalk(int id) {
+    public String deleteTalk(int id) throws RandomError {
         EntityManager em = emf.createEntityManager();
 
         Talk talk = em.find(Talk.class, id);
@@ -111,8 +124,139 @@ public class AdminFacade {
             em.remove(talk);
             em.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RandomError(500, "Unable to delete talk.. Please contact support");
         }
         return "Talk with id: " + id + " has been deleted..";
+    }
+
+    public List<TalkDTO> getpropsfortalk(int talkId) throws RandomError {
+        EntityManager em = emf.createEntityManager();
+        Talk talk = em.find(Talk.class, talkId);
+
+        List<TalkDTO> proplist = new ArrayList<>();
+
+        try {
+
+            for (int i = 0; i < talk.getProps().size(); i++) {
+                TalkDTO talkDTO = new TalkDTO(talk.getProps().get(i));
+                proplist.add(talkDTO);
+            }
+        } catch (Exception e) {
+            throw new RandomError(500, "Unable to fetch props.. Please contact support");
+        }
+
+        return proplist;
+    }
+
+    public TalkDTO removeProp(int talkid, int propid) throws RandomError {
+        EntityManager em = emf.createEntityManager();
+
+        Talk talk = em.find(Talk.class, talkid);
+        PropList propList = em.find(PropList.class, propid);
+
+        talk.getProps().remove(propList);
+
+        try {
+
+        em.getTransaction().begin();
+        em.merge(talk);
+        em.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RandomError(500, "Unable to remove prop.. Please contact support");
+        }
+
+        TalkDTO talkDTO = new TalkDTO(talk);
+
+        return talkDTO;
+    }
+
+    public TalkDTO addProp(int talkid, PropsDTO prop) throws RandomError {
+        EntityManager em = emf.createEntityManager();
+
+        Talk talk = em.find(Talk.class, talkid);
+
+        PropList propList = new PropList(prop);
+
+        talk.getProps().add(propList);
+
+       try{
+        em.getTransaction().begin();
+        em.merge(talk);
+        em.getTransaction().commit();
+       } catch (Exception e) {
+           throw new RandomError(500, "Unable to add props.. Please contact support");
+       }
+
+        TalkDTO talkDTO = new TalkDTO(talk);
+
+        return talkDTO;
+    }
+
+    public TalkDTO addConferenceToTalk(int talkid, int confId) throws RandomError {
+        EntityManager em = emf.createEntityManager();
+
+        Talk talk = em.find(Talk.class, talkid);
+        Conference conference = em.find(Conference.class, confId);
+
+        talk.setConference(conference);
+
+        try{
+
+        em.getTransaction().begin();
+        em.merge(talk);
+        em.getTransaction().commit();
+        }catch (Exception e){
+            throw new RandomError(500, "Unable to change conference info.. Please contact support");
+        }
+
+        TalkDTO talkDTO = new TalkDTO(talk);
+
+        return talkDTO;
+
+    }
+
+    public ConferenceDTO updateConference(int confid, ConferenceDTO conferenceDTO) throws RandomError {
+
+        EntityManager em = emf.createEntityManager();
+
+        Conference conference = em.find(Conference.class, confid);
+
+        conference.setTime(conferenceDTO.getDto_time());
+        conference.setDate(conferenceDTO.getDto_date());
+        conference.setcapacity(conferenceDTO.getDto_capacity());
+        conference.setlocation(conferenceDTO.getDto_location());
+
+        try {
+            em.getTransaction().begin();
+            em.merge(conference);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RandomError(500, "Unable to change conference info.. Please contact support");
+        }
+
+        return conferenceDTO;
+    }
+
+    public SpeakerDTO updateSpeaker(int speakerId, SpeakerDTO speakerDTO) throws RandomError {
+        EntityManager em = emf.createEntityManager();
+
+        Speaker speaker = em.find(Speaker.class, speakerId);
+
+        speaker.setGender(speakerDTO.getDto_gender());
+        speaker.setProffession(speakerDTO.getDto_proffession());
+        speaker.setName(speakerDTO.getDto_name());
+
+
+        try {
+            em.getTransaction().begin();
+            em.merge(speaker);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RandomError(500, "Unable to change speaker info.. Please contact support");
+        }
+
+        return speakerDTO;
+
+
     }
 }

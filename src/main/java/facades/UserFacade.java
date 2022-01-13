@@ -5,13 +5,10 @@ import dtos.SpeakerDTO;
 import dtos.TalkDTO;
 import dtos.UserDTO;
 import entities.*;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
-
 import security.errorhandling.AuthenticationException;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,19 +134,6 @@ public class UserFacade {
         }
         return talkDTOS;
     }
-
-
-//    public List<TalkDTO> GetTalkBySpeakerId(int speakerId) {
-//        EntityManager em = getEntityManager();
-//        TypedQuery<Speaker> query = em.createQuery("SELECT s FROM Speaker s join Talk t where s.id=:speakerId", Speaker.class);
-//        query.setParameter("speakerId", speakerId);
-//        List<TalkDTO> talkDTOS = new ArrayList<>();
-//        for (int i = 0; i < query.getSingleResult().getTalkList().size(); i++) {
-//            TalkDTO talkDTO = new TalkDTO(query.getSingleResult().getTalkList().get(i));
-//            talkDTOS.add(talkDTO);
-//        }
-//        return talkDTOS;
-//    }
 
     public List<TalkDTO> GetTalkBySpeakerId(int speakerId) {
         EntityManager em = getEntityManager();
