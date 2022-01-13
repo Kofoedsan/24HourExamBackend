@@ -17,7 +17,7 @@ public class Init implements ServletContextListener {
     public void contextInitialized(ServletContextEvent event) {
         try {
             System.out.println("Setting up DB");
-//            initFacade.InitDB();
+            initFacade.InitDB();
 
         } catch (Exception e) {
             System.out.println("Db already exists.. Skipping");

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class LocalTestDb {
 
-    public static void main(String[] args) throws IOException {
+    public static void main() throws IOException {
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         EntityManager em = emf.createEntityManager();
 
