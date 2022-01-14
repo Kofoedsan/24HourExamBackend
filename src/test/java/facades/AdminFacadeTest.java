@@ -224,10 +224,13 @@ class AdminFacadeTest {
     @Test
     void createConference() throws RandomError {
 
-        ConferenceDTO conferenceDTO = new ConferenceDTO(5, "Lolland", 1600, "StorBranche", "Male");
+        ConferenceDTO conferenceDTO = new ConferenceDTO("Lolland", 1600, "StorBranche", "Male");
         ConferenceDTO expected = facade.createConference(conferenceDTO);
 
-        assertEquals(conferenceDTO, expected);
+        assertEquals(conferenceDTO.getDto_capacity(), expected.getDto_capacity());
+        assertEquals(conferenceDTO.getDto_location(), expected.getDto_location());
+        assertEquals(conferenceDTO.getDto_date(), expected.getDto_date());
+        assertEquals(conferenceDTO.getDto_time(), expected.getDto_time());
 
     }
 
