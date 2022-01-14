@@ -261,4 +261,24 @@ public class AdminFacade {
 
 
     }
+
+    public TalkDTO updateTalk(int talkId, TalkDTO talkDTO) throws RandomError {
+        EntityManager em = emf.createEntityManager();
+
+        Talk talk = em.find(Talk.class, talkId);
+
+        talk.setTopic(talkDTO.getDto_topic());
+        talk.setduration(talkDTO.getDto_duration());
+
+        try {
+            em.getTransaction().begin();
+            em.merge(talk);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            throw new RandomError(500, "Unable to change speaker info.. Please contact support");
+        }
+
+        return talkDTO;
+
+    }
 }

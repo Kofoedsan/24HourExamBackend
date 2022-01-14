@@ -66,7 +66,7 @@ public class AdminEndPoint {
     }
 
     @DELETE
-//    @RolesAllowed({"admin", "superuser"})
+    @RolesAllowed({"admin", "superuser"})
     @Path("deleteTalk/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response deleteUser(@PathParam("id") int id) throws RandomError {
@@ -107,7 +107,7 @@ public class AdminEndPoint {
 
     @PUT
     @Path("addConferenceToTalk/{talkid}")
-//    @RolesAllowed({"admin", "superuser"})
+    @RolesAllowed({"admin", "superuser"})
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response addConferenceToTalk(@PathParam("talkid") int talkid, int confId) throws RandomError {
@@ -134,6 +134,17 @@ public class AdminEndPoint {
     public Response updateSpeaker(@PathParam("speakerId") int speakerId, String speaker) throws RandomError {
         SpeakerDTO speakerDTO = GSON.fromJson(speaker, SpeakerDTO.class);
         SpeakerDTO result = adminFacade.updateSpeaker(speakerId,speakerDTO);
+        return Response.ok().entity(GSON.toJson(result)).build();
+    }
+
+    @PUT
+    @Path("updateTalk/{talkId}")
+    @RolesAllowed({"admin", "superuser"})
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response updateTalk(@PathParam("talkId") int talkId, String talk) throws RandomError {
+        TalkDTO talkDTO = GSON.fromJson(talk, TalkDTO.class);
+        TalkDTO result = adminFacade.updateTalk(talkId,talkDTO);
         return Response.ok().entity(GSON.toJson(result)).build();
     }
 
