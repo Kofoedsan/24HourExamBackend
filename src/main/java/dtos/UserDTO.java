@@ -12,6 +12,7 @@ public class UserDTO {
     private String dto_userName;
     private String dto_Name;
     private int dto_phone;
+    private String dto_email;
     private String dto_userPass;
     private List<Role> dto_roleList = new ArrayList<>();
     private List<String> dto_roleListAsString = new ArrayList<>();
@@ -94,6 +95,13 @@ public class UserDTO {
         this.dto_phone = dto_phone;
     }
 
+    public String getDto_email() {
+        return dto_email;
+    }
+
+    public void setDto_email(String dto_email) {
+        this.dto_email = dto_email;
+    }
 
     @Override
     public boolean equals(Object o) {

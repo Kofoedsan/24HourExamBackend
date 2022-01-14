@@ -4,6 +4,7 @@ import dtos.TalkDTO;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @NamedQuery(name = "talk.deleteAllRows", query = "DELETE from Talk ")
@@ -77,5 +78,19 @@ public class Talk {
 
     public void setProps(List<PropList> props) {
         this.props = props;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Talk)) return false;
+        Talk talk = (Talk) o;
+        return Objects.equals(getId(), talk.getId()) && Objects.equals(getTopic(), talk.getTopic()) && Objects.equals(duration, talk.duration) && Objects.equals(getConference(), talk.getConference()) && Objects.equals(getProps(), talk.getProps());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getTopic(), duration, getConference(), getProps());
     }
 }

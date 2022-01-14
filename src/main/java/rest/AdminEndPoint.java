@@ -16,7 +16,7 @@ import utils.EMF_Creator;
 public class AdminEndPoint {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    private final AdminFacade adminFacade = AdminFacade.getUserFacade(EMF);
+    private final AdminFacade adminFacade = AdminFacade.getAdminFacade(EMF);
     private final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @Context
@@ -66,11 +66,11 @@ public class AdminEndPoint {
     }
 
     @DELETE
-    @RolesAllowed({"admin", "superuser"})
+//    @RolesAllowed({"admin", "superuser"})
     @Path("deleteTalk/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response deleteUser(@PathParam("id") int id) throws RandomError {
-        String result = adminFacade.deleteTalk(id);
+        TalkDTO result = adminFacade.deleteTalk(id);
         return Response.ok().entity(GSON.toJson(result)).build();
     }
 

@@ -5,6 +5,7 @@ import dtos.SpeakerDTO;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @NamedQuery(name = "speaker.deleteAllRows", query = "DELETE from Speaker ")
@@ -78,5 +79,18 @@ public class Speaker {
 
     public void setTalkList(List<Talk> talkList) {
         this.talkList = talkList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Speaker)) return false;
+        Speaker speaker = (Speaker) o;
+        return Objects.equals(getId(), speaker.getId()) && Objects.equals(getName(), speaker.getName()) && Objects.equals(getProffession(), speaker.getProffession()) && Objects.equals(getGender(), speaker.getGender()) && Objects.equals(getTalkList(), speaker.getTalkList());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getProffession(), getGender(), getTalkList());
     }
 }

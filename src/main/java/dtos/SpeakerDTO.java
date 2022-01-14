@@ -2,6 +2,8 @@ package dtos;
 
 import entities.Speaker;
 
+import java.util.Objects;
+
 public class SpeakerDTO {
     private Integer dto_id;
     private String dto_name;
@@ -11,6 +13,12 @@ public class SpeakerDTO {
 
     public SpeakerDTO(Integer dto_id, String dto_name, String dto_proffession, String dto_gender) {
         this.dto_id = dto_id;
+        this.dto_name = dto_name;
+        this.dto_proffession = dto_proffession;
+        this.dto_gender = dto_gender;
+    }
+
+    public SpeakerDTO(String dto_name, String dto_proffession, String dto_gender) {
         this.dto_name = dto_name;
         this.dto_proffession = dto_proffession;
         this.dto_gender = dto_gender;
@@ -56,4 +64,17 @@ public class SpeakerDTO {
         this.dto_gender = dto_gender;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SpeakerDTO)) return false;
+        SpeakerDTO that = (SpeakerDTO) o;
+        return Objects.equals(getDto_id(), that.getDto_id()) && Objects.equals(getDto_name(), that.getDto_name()) && Objects.equals(getDto_proffession(), that.getDto_proffession()) && Objects.equals(getDto_gender(), that.getDto_gender());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDto_id(), getDto_name(), getDto_proffession(), getDto_gender());
+    }
 }

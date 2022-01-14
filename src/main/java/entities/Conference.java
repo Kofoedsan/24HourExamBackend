@@ -4,6 +4,7 @@ import dtos.ConferenceDTO;
 import dtos.TalkDTO;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @NamedQuery(name = "conference.deleteAllRows", query = "DELETE from Conference")
@@ -17,7 +18,6 @@ public class Conference {
     private Integer capacity;
     private String date;
     private String time;
-
 
     public Conference(String location, Integer capacity, String date, String time) {
         this.location = location;
@@ -82,5 +82,19 @@ public class Conference {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Conference)) return false;
+        Conference that = (Conference) o;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(location, that.location) && Objects.equals(capacity, that.capacity) && Objects.equals(getDate(), that.getDate()) && Objects.equals(getTime(), that.getTime());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), location, capacity, getDate(), getTime());
     }
 }

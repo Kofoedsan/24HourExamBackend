@@ -18,7 +18,7 @@ public class AdminFacade {
     }
 
 
-    public static AdminFacade getUserFacade(EntityManagerFactory _emf) {
+    public static AdminFacade getAdminFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
             instance = new AdminFacade();
@@ -102,11 +102,12 @@ public class AdminFacade {
 
     }
 
-    public String deleteTalk(int id) throws RandomError {
+    public TalkDTO deleteTalk(int id) throws RandomError {
         EntityManager em = emf.createEntityManager();
 
         Talk talk = em.find(Talk.class, id);
         Speaker speaker = null;
+        TalkDTO talkDTO = null;
         TypedQuery<Speaker> query = em.createQuery("SELECT s FROM Speaker s where s.talkList=:talk", Speaker.class);
         query.setParameter("talk", talk);
         for (int i = 0; i < query.getResultList().size(); i++) {
@@ -123,10 +124,11 @@ public class AdminFacade {
             em.merge(talk);
             em.remove(talk);
             em.getTransaction().commit();
+            talkDTO = new TalkDTO(talk);
         } catch (Exception e) {
             throw new RandomError(500, "Unable to delete talk.. Please contact support");
         }
-        return "Talk with id: " + id + " has been deleted..";
+        return talkDTO;
     }
 
     public List<TalkDTO> getpropsfortalk(int talkId) throws RandomError {

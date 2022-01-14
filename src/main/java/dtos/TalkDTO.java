@@ -5,6 +5,7 @@ import entities.Talk;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TalkDTO {
     private Integer dto_id;
@@ -117,5 +118,19 @@ public class TalkDTO {
 
     public void setDto_time(String dto_time) {
         this.dto_time = dto_time;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TalkDTO)) return false;
+        TalkDTO talkDTO = (TalkDTO) o;
+        return Objects.equals(getDto_id(), talkDTO.getDto_id()) && Objects.equals(getDto_topic(), talkDTO.getDto_topic()) && Objects.equals(getDto_duration(), talkDTO.getDto_duration()) && Objects.equals(getDto_location(), talkDTO.getDto_location()) && Objects.equals(getDto_capacity(), talkDTO.getDto_capacity()) && Objects.equals(getDto_date(), talkDTO.getDto_date()) && Objects.equals(getDto_time(), talkDTO.getDto_time()) && Objects.equals(dto_props_id, talkDTO.dto_props_id) && Objects.equals(dto_props_item, talkDTO.dto_props_item) && Objects.equals(getDto_propsDTOList(), talkDTO.getDto_propsDTOList());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDto_id(), getDto_topic(), getDto_duration(), getDto_location(), getDto_capacity(), getDto_date(), getDto_time(), dto_props_id, dto_props_item, getDto_propsDTOList());
     }
 }

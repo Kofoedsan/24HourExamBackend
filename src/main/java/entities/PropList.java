@@ -3,6 +3,7 @@ package entities;
 import dtos.PropsDTO;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @NamedQuery(name = "prop_list.deleteAllRows", query = "DELETE from PropList")
@@ -13,6 +14,12 @@ public class PropList {
     @Column(name = "id", nullable = false)
     private Integer id;
     private String item;
+
+
+    public PropList(Integer id, String item) {
+        this.id = id;
+        this.item = item;
+    }
 
     public PropList(String item) {
         this.item = item;
@@ -40,5 +47,19 @@ public class PropList {
 
     public void setItem(String item) {
         this.item = item;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PropList)) return false;
+        PropList propList = (PropList) o;
+        return Objects.equals(getId(), propList.getId()) && Objects.equals(getItem(), propList.getItem());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getItem());
     }
 }

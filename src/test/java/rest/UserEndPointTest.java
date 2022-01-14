@@ -10,17 +10,14 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
-
 
 class UserEndPointTest {
     private static final int SERVER_PORT = 7777;
@@ -339,5 +336,40 @@ class UserEndPointTest {
 
     }
 
+
+    @Test
+    void deleteTalk() {
+        login("admin", "test");
+        given()
+                .contentType("application/json").when()
+                .header("x-access-token", securityToken)
+                .delete("/admin/deleteTalk/" + talk2.getId()).then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("dto_id", equalTo(talk2.getId()))
+                .body("dto_topic", equalTo(talk2.getTopic()))
+                .body("dto_duration", equalTo(talk2.getduration()));
+    }
+
+    @Test
+    void createconference() {
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("dto_location", "Rønne");
+        requestParams.put("dto_capacity", "700");
+        requestParams.put("dto_date", "27/01/1970");
+        requestParams.put("dto_time", "10:00");
+        login("admin", "test");
+        given()
+                .contentType("application/json").when()
+                .header("x-access-token", securityToken)
+                .body(requestParams.toJSONString())
+                .post("/admin/createconference/").then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("dto_location", equalTo("Rønne"))
+                .body("dto_capacity", equalTo(700))
+                .body("dto_date", equalTo("27/01/1970"))
+                .body("dto_time", equalTo("10:00"));
+    }
 
 }

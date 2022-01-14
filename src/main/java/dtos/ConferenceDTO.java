@@ -2,6 +2,8 @@ package dtos;
 
 import entities.Conference;
 
+import java.util.Objects;
+
 public class ConferenceDTO {
     private Integer dto_id;
     private String dto_location;
@@ -73,5 +75,19 @@ public class ConferenceDTO {
 
     public void setDto_time(String dto_time) {
         this.dto_time = dto_time;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ConferenceDTO)) return false;
+        ConferenceDTO that = (ConferenceDTO) o;
+        return Objects.equals(getDto_id(), that.getDto_id()) && Objects.equals(getDto_location(), that.getDto_location()) && Objects.equals(getDto_capacity(), that.getDto_capacity()) && Objects.equals(getDto_date(), that.getDto_date()) && Objects.equals(getDto_time(), that.getDto_time());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDto_id(), getDto_location(), getDto_capacity(), getDto_date(), getDto_time());
     }
 }
