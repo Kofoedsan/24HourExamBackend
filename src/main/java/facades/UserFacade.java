@@ -49,8 +49,16 @@ public class UserFacade {
         return user;
     }
 
-    public UserDTO addUser(UserDTO udto) {
+    public UserDTO addUser(UserDTO udto) throws AuthenticationException {
         EntityManager em = emf.createEntityManager();
+
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u where u.userName = :username", User.class);
+        query.setParameter("username", udto.getDto_userName());
+        List<User> userList = query.getResultList();
+
+        if(userList.size()!=0){
+            throw new AuthenticationException("User already exists!");
+        }
         UserDTO newUser;
         User user = new User(udto);
         Role userRole = new Role("user");

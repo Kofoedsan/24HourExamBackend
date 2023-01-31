@@ -10,7 +10,7 @@ public class UserDTO {
 
     private int dto_id;
     private String dto_userName;
-    private String dto_Name;
+    private String dto_name;
     private int dto_phone;
     private String dto_email;
     private String dto_userPass;
@@ -20,22 +20,22 @@ public class UserDTO {
     public UserDTO(User u) {
         this.dto_id = u.getId();
         this.dto_userName = u.getUserName();
-        this.dto_Name = u.getName();
+        this.dto_name = u.getName();
         this.dto_phone = u.getPhone();
     }
 
-    public UserDTO(int dto_id, String dto_userName, String dto_Name, int dto_phone, List<String> dto_roleListAsString) {
+    public UserDTO(int dto_id, String dto_userName, String dto_name, int dto_phone, List<String> dto_roleListAsString) {
         this.dto_id = dto_id;
         this.dto_userName = dto_userName;
-        this.dto_Name = dto_Name;
+        this.dto_name = dto_name;
         this.dto_phone = dto_phone;
         this.dto_roleListAsString = dto_roleListAsString;
     }
 
     //For testing only
-    public UserDTO(String dto_userName, String dto_Name, int dto_phone) {
+    public UserDTO(String dto_userName, String dto_name, int dto_phone) {
         this.dto_userName = dto_userName;
-        this.dto_Name = dto_Name;
+        this.dto_name = dto_name;
         this.dto_phone = dto_phone;
     }
 
@@ -79,12 +79,12 @@ public class UserDTO {
         this.dto_id = dto_id;
     }
 
-    public String getDto_Name() {
-        return dto_Name;
+    public String getDto_name() {
+        return dto_name;
     }
 
-    public void setDto_Name(String dto_Name) {
-        this.dto_Name = dto_Name;
+    public void setDto_name(String dto_name) {
+        this.dto_name = dto_name;
     }
 
     public int getDto_phone() {
@@ -108,11 +108,11 @@ public class UserDTO {
         if (this == o) return true;
         if (!(o instanceof UserDTO)) return false;
         UserDTO userDTO = (UserDTO) o;
-        return getDto_id() == userDTO.getDto_id() && getDto_phone() == userDTO.getDto_phone() && Objects.equals(getDto_userName(), userDTO.getDto_userName()) && Objects.equals(getDto_Name(), userDTO.getDto_Name()) && Objects.equals(getDto_userPass(), userDTO.getDto_userPass()) && Objects.equals(getDto_roleList(), userDTO.getDto_roleList()) && Objects.equals(getDto_roleListAsString(), userDTO.getDto_roleListAsString());
+        return getDto_id() == userDTO.getDto_id() && getDto_phone() == userDTO.getDto_phone() && Objects.equals(getDto_userName(), userDTO.getDto_userName()) && Objects.equals(getDto_name(), userDTO.getDto_name()) && Objects.equals(getDto_userPass(), userDTO.getDto_userPass()) && Objects.equals(getDto_roleList(), userDTO.getDto_roleList()) && Objects.equals(getDto_roleListAsString(), userDTO.getDto_roleListAsString());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDto_id(), getDto_userName(), getDto_Name(), getDto_phone(), getDto_userPass(), getDto_roleList(), getDto_roleListAsString());
+        return Objects.hash(getDto_id(), getDto_userName(), getDto_name(), getDto_phone(), getDto_userPass(), getDto_roleList(), getDto_roleListAsString());
     }
 }

@@ -40,9 +40,17 @@ public class User {
 
 
 
-    public User(UserDTO udto) {
+//    public User(UserDTO udto) {
+//        this.userName = udto.getDto_userName();
+//        this.userPass = BCrypt.hashpw(udto.getDto_userPass(), BCrypt.gensalt());
+//    }
+
+        public User(UserDTO udto) {
         this.userName = udto.getDto_userName();
         this.userPass = BCrypt.hashpw(udto.getDto_userPass(), BCrypt.gensalt());
+        this.name = udto.getDto_name();
+        this.email = udto.getDto_email();
+        this.phone = udto.getDto_phone();
     }
 
     public User(String userName, String name, String email, int phone, String userPass) {
